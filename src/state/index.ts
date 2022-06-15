@@ -36,7 +36,6 @@ const store = configureStore({
     preloadedState: {
       user: safeCloneDeep(userInitialState),
       transactions: safeCloneDeep(transactionsInitialState),
-      // transactions: safeCloneDeep(transactionsInitialState),
       // lists: safeCloneDeep(listsInitialState),
       // profile: safeCloneDeep(profileInitialState),
     },
