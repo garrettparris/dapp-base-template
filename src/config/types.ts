@@ -25,4 +25,4 @@ export type Token = {
 
 export interface TokenList {
     [symbol: string]: Token
-  }
+}
