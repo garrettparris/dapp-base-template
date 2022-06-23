@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-
-import { InjectedProps } from "../../contexts/ModalContext/types"
+import Text from "../Text";
+import { InjectedProps } from "../../../contexts/ModalContext/types"
+import Button from "../Button";
 interface Props extends InjectedProps {
     title: string;
     hideCloseButton?: boolean;
@@ -50,14 +51,14 @@ const Modal: React.FC<Props> = ({
         <ModalHeader>
             <ModalTitle>
                 {onBack && (
-                    <div>hiiii</div>
+                    <Text>hiiii</Text>
                 )}
-                <h2>{title}</h2>
+                <Text>{title}</Text>
             </ModalTitle>
             {!hideCloseButton && (
-                <button onClick={onDismiss} aria-label="Close the dialog">
+                <Button onClick={onDismiss} aria-label="Close the dialog">
                     close me
-                </button>
+                </Button>
             )}
         </ModalHeader>
         <div style = {{flexDirection:"column", padding: bodyPadding}} >

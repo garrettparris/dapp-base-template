@@ -1,4 +1,6 @@
 import { Colors, Breakpoints, MediaQueries, Spacing} from "./types";
+import { ToggleTheme } from "../components/Toggle/types";
+import { CardTheme } from "ui-kit/components/Card/types";
 
 export interface PancakeTheme {
   siteWidth: number;
@@ -7,6 +9,8 @@ export interface PancakeTheme {
   breakpoints: Breakpoints;
   mediaQueries: MediaQueries;
   spacing: Spacing;
+  toggle: ToggleTheme;
+  card: CardTheme
 }
 
 export { default as dark } from "./dark";

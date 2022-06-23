@@ -1,8 +1,9 @@
-import Modal from "components/Modal";
+import Modal from "ui-kit/components/Modal";
 import React from "react";
 import styled from "styled-components";
 import { connectorLocalStorageKey, ConnectorNames } from "utils/web3React";
 import { Login } from "../../hooks/types";
+import ThemeToggle from '../ThemeToggle'
 interface Props {
     login: Login;
     onDismiss?: () => void;
@@ -11,8 +12,7 @@ interface Props {
 
 const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
     <Modal title="Connect to a wallet" onDismiss={onDismiss}>
-        helloooo
-
+        <ThemeToggle />
         <button onClick={() => {
             login(ConnectorNames.Injected)
             window.localStorage.setItem(connectorLocalStorageKey, ConnectorNames.Injected);

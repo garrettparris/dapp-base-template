@@ -5,16 +5,19 @@ import {
   toggleTheme,
 
 } from './actions'
+import { GAS_PRICE_GWEI } from './hooks/helpers'
 
 const currentTimestamp = () => new Date().getTime()
 export interface UserState {
 
   timestamp: number
   isDark: boolean
+  gasPrice: string
 }
 export const initialState: UserState = {
   timestamp: currentTimestamp(),
   isDark: false,
+  gasPrice: GAS_PRICE_GWEI.default,
 }
 
 export default createReducer(initialState, (builder) =>

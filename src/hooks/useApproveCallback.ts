@@ -8,7 +8,9 @@ import { useTokenContract } from './useContract'
 import { BigNumber } from 'ethers'
 import { Token } from '../config/types'
 import ethers, { Contract, CallOverrides } from 'ethers'
-import { get } from 'lodash'
+import { useCallWithGasPrice } from './useCallWithGasPrice'
+import useToast from './useToast'
+import { calculateGasMargin } from '../utils'
 
 export enum ApprovalState {
     UNKNOWN,
@@ -16,26 +18,6 @@ export enum ApprovalState {
     PENDING,
     APPROVED,
 }
-
-
-const callApproval = useCallback(
-    async (
-        contract: Contract,
-        methodName: string,
-        methodArgs: any[] = [],
-    ): Promise<ethers.providers.TransactionResponse> => {
-
-        const contractMethod = get(contract, methodName)
-
-        const tx = await contractMethod(
-            ...methodArgs,
-        )
-
-        return tx
-    },
-    [],
-)
-
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
 export function useApproveCallback(
@@ -45,6 +27,8 @@ export function useApproveCallback(
     const { account } = useActiveWeb3React()
     const currentAllowance = useTokenAllowance(token.address, account ?? undefined, spender)
     const pendingApproval = useHasPendingApproval(token.address, spender)
+    const { callWithGasPrice } = useCallWithGasPrice()
+    const { toastError } = useToast()
 
     // check the current approval status
     const approvalState: ApprovalState = useMemo(() => {
@@ -97,10 +81,13 @@ export function useApproveCallback(
         })
 
         // eslint-disable-next-line consistent-return
-        return callApproval(
+        return callWithGasPrice(
             tokenContract,
             'approve',
-            [spender, MaxUint256],
+            [spender, useExact ? MaxUint256.toString() : MaxUint256],
+            {
+                gasLimit: calculateGasMargin(estimatedGas),
+            },
         )
             .then((response: TransactionResponse) => {
                 addTransaction(response, {
@@ -109,10 +96,11 @@ export function useApproveCallback(
                 })
             })
             .catch((error: Error) => {
+                toastError(`Failed to approve ${token.ticker}`)
                 console.error('Failed to approve token', error)
                 throw error
             })
-    }, [approvalState, token, tokenContract, spender, addTransaction, callApproval])
+        }, [approvalState, token, tokenContract, spender, addTransaction, callWithGasPrice])
 
 
 

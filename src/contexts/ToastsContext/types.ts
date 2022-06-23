@@ -1,5 +1,4 @@
-import { Toast } from 'components/Toast'
-
+import { Toast } from '../../ui-kit/components/Toast/types'
 type ToastSignature = (title: Toast['title'], description?: Toast['description']) => void
 export interface ToastContextApi {
   toasts: Toast[]
